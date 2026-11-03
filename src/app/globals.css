@@ -1,4 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -120,7 +120,7 @@ button { cursor: pointer; font: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.05);
+  filter: none !important;
 }
 
 .lead-image figcaption {
@@ -478,16 +478,1087 @@ body {
   color: #E84F1A;
 }
 
-/* Keep the original lake photograph in full colour */
+
 .lead-image img,
 .small-image img {
   filter: none !important;
   -webkit-filter: none !important;
 }
 
-/* Restore newspaper-style black and white photography */
+/* DEEPAK PORTFOLIO ANIMATIONS */
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 750ms ease,
+    transform 750ms cubic-bezier(.2,.7,.2,1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal-left { transform: translateX(-28px); }
+.reveal-right { transform: translateX(28px); }
+.reveal-down { transform: translateY(-22px); }
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Editorial headline entrance */
+.masthead-title {
+  animation: mastheadReveal 950ms cubic-bezier(.2,.7,.2,1) both;
+}
+
+.lead-story > h1 {
+  animation: headlineReveal 850ms 180ms both;
+}
+
+@keyframes mastheadReveal {
+  from { opacity: 0; transform: translateY(24px); letter-spacing: -.09em; }
+  to { opacity: 1; transform: translateY(0); letter-spacing: -.055em; }
+}
+
+@keyframes headlineReveal {
+  from { opacity: 0; transform: translateX(-22px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Staggered project cards */
+.project-card:nth-child(2n) { --reveal-delay: 120ms; }
+.project-card:nth-child(3n) { --reveal-delay: 220ms; }
+
+.project-card {
+  transition:
+    transform 350ms ease,
+    box-shadow 350ms ease;
+}
+
+.project-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 12px 25px #3D3D3B18;
+}
+
+.project-image img,
 .lead-image img,
 .small-image img {
-  filter: grayscale(100%) !important;
-  -webkit-filter: grayscale(100%) !important;
+  transition: transform 700ms cubic-bezier(.2,.7,.2,1);
 }
+
+.project-card:hover .project-image img,
+.lead-image:hover img,
+.small-image:hover img {
+  transform: scale(1.045);
+}
+
+/* Navigation underline */
+.category-bar a {
+  position: relative;
+  transition: color 250ms ease;
+}
+
+.category-bar a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 2px;
+  background: var(--orange);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 250ms ease;
+}
+
+.category-bar a:hover::after,
+.category-bar a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Buttons and links */
+.project-link,
+.contact-links a,
+.contact-links button {
+  transition: color 220ms ease, transform 220ms ease;
+}
+
+.project-link:hover,
+.contact-links a:hover,
+.contact-links button:hover {
+  transform: translateX(4px);
+}
+
+/* Terminal entrance */
+.terminal-overlay.terminal-enter {
+  animation: overlayFade 220ms ease both;
+}
+
+.terminal-box.terminal-enter {
+  animation: terminalPop 320ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes terminalPop {
+  from { opacity: 0; transform: translateY(18px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Terminal cursor */
+.terminal-output::after {
+  content: "Ã¢â€“â€¹";
+  color: var(--orange);
+  display: inline-block;
+  margin-left: 4px;
+  animation: terminalBlink 1s steps(2, start) infinite;
+}
+
+@keyframes terminalBlink {
+  to { visibility: hidden; }
+}
+
+/* Keyboard accessibility */
+.category-bar a:focus-visible,
+button:focus-visible,
+.project-link:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+/* PORTFOLIO V2 - INTERACTIVE ANIMATIONS */
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  z-index: 200;
+  background: #E84F1A;
+  box-shadow: 0 0 10px #E84F1A55;
+  transition: width 80ms linear;
+  pointer-events: none;
+}
+
+/* 3D project cards */
+.tilt-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  transform:
+    perspective(1100px)
+    rotateX(var(--tilt-x))
+    rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition:
+    transform 180ms ease-out,
+    box-shadow 300ms ease;
+}
+
+.tilt-card:hover {
+  box-shadow: 0 18px 32px #3D3D3B18;
+}
+
+/* Image spotlight */
+.project-image img {
+  transition:
+    transform 650ms cubic-bezier(.2,.7,.2,1),
+    filter 500ms ease;
+}
+
+.project-card:hover .project-image img {
+  filter: none !important;
+  transform: scale(1.07);
+}
+
+/* Animated newspaper rules */
+.section-heading {
+  position: relative;
+}
+
+.section-heading::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #E84F1A;
+  transition: width 800ms cubic-bezier(.2,.7,.2,1);
+}
+
+.reveal.is-visible .section-heading::after,
+.section-heading:hover::after {
+  width: 100%;
+}
+
+/* Headline accent */
+.projects-headline,
+.contact-headline {
+  transition: letter-spacing 450ms ease;
+}
+
+.projects-headline:hover,
+.contact-headline:hover {
+  letter-spacing: .015em;
+}
+
+/* Back to top */
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 90;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #3D3D3B;
+  background: #3D3D3B;
+  color: white;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(18px);
+  transition:
+    opacity 300ms ease,
+    transform 300ms ease,
+    background 250ms ease,
+    visibility 300ms;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: #E84F1A;
+  border-color: #E84F1A;
+}
+
+/* Terminal polish */
+.terminal-box {
+  box-shadow: 12px 12px 0 #E84F1A35;
+}
+
+.terminal-box form:focus-within {
+  border-bottom-color: #E84F1A;
+}
+
+.terminal-box form button {
+  transition: background 200ms ease, transform 200ms ease;
+}
+
+.terminal-box form button:hover {
+  background: #3D3D3B;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 700px) {
+  .back-to-top {
+    width: 42px;
+    height: 42px;
+    right: 14px;
+    bottom: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-card,
+  .tilt-card:hover {
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .reading-progress,
+  .back-to-top,
+  .section-heading::after {
+    transition: none !important;
+  }
+}
+/* IMAGE COLOR REVEAL ON HOVER */
+.lead-image img,
+.small-image img,
+.project-image img {
+  filter: none !important;
+  -webkit-filter: none !important;
+  transition:
+    filter 650ms ease,
+    -webkit-filter 650ms ease,
+    transform 700ms ease !important;
+}
+
+.lead-image:hover img,
+.small-image:hover img,
+.project-image:hover img {
+  filter: none !important;
+  -webkit-filter: none !important;
+  transform: scale(1.045);
+}
+
+/* Touchscreen devices: retain full-colour images */
+@media (hover: none) {
+  .lead-image img,
+  .small-image img,
+  .project-image img {
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+}
+
+/* ==========================================
+   FINAL IMAGE COLOR HOVER FIX
+   Technical Expertise + All Project Images
+========================================== */
+
+/* Default: editorial grayscale */
+.lead-image img,
+.small-image img,
+.project-image img,
+.project-card .project-image img {
+    filter: none !important;
+    -webkit-filter: none !important;
+    transition: filter 700ms ease, transform 700ms ease !important;
+}
+
+/* Reveal full original colour on hover */
+.lead-image:hover img,
+.small-image:hover img,
+.project-image:hover img,
+.project-card:hover .project-image img,
+.lead-image:focus-within img,
+.small-image:focus-within img,
+.project-image:focus-within img {
+    filter: none !important;
+    -webkit-filter: none !important;
+    transform: scale(1.05);
+}
+
+/* Keep images coloured on touch devices */
+@media (hover: none) {
+    .lead-image img,
+    .small-image img,
+    .project-image img,
+    .project-card .project-image img {
+        filter: none !important;
+        -webkit-filter: none !important;
+    }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .lead-image img,
+    .small-image img,
+    .project-image img {
+        transition: none !important;
+    }
+}
+
+/* FINAL FIX: KEEP TECHNICAL AND PROJECT IMAGES IN FULL COLOUR */
+.lead-image img,
+.small-image img,
+.project-image img {
+    filter: none !important;
+    -webkit-filter: none !important;
+    opacity: 1 !important;
+    transition: transform 700ms ease !important;
+}
+
+/* Preserve smooth zoom animation on hover */
+.lead-image:hover img,
+.small-image:hover img,
+.project-card:hover .project-image img {
+    filter: none !important;
+    -webkit-filter: none !important;
+    transform: scale(1.05);
+}
+
+/* IMAGE COLOUR ENFORCEMENT */
+.lead-image img,
+.small-image img,
+.project-image img {
+    filter: none !important;
+    -webkit-filter: none !important;
+    opacity: 1 !important;
+}
+
+.lead-image:hover img,
+.small-image:hover img,
+.project-card:hover .project-image img {
+    filter: none !important;
+    -webkit-filter: none !important;
+    transform: scale(1.05);
+}
+/* PROJECT DETAIL PAGES */
+.detail-page {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 34px 5%;
+  color: #3D3D3B;
+  background: #FFFFFF;
+  min-height: 100vh;
+}
+.detail-masthead {
+  border-top: 4px solid #3D3D3B;
+  border-bottom: 3px double #3D3D3B;
+  padding: 18px 0 12px;
+  text-align: center;
+}
+.detail-brand {
+  color: #3D3D3B;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(34px, 7vw, 82px);
+  font-weight: 900;
+  letter-spacing: -3px;
+  text-decoration: none;
+}
+.detail-brand span { color: #E84F1A; }
+.detail-masthead p,.detail-nav,.detail-kicker,.detail-number,
+.detail-actions span,.detail-footer span {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.detail-nav {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 15px;
+  background: #3D3D3B;
+  margin-top: 10px;
+}
+.detail-nav a { color: white; text-decoration: none; }
+.detail-nav a:hover { color: #E84F1A; }
+.detail-hero {
+  padding: clamp(55px, 9vw, 110px) 0 45px;
+  max-width: 1000px;
+}
+.detail-kicker,.detail-number { color: #E84F1A; text-transform: uppercase; }
+.detail-hero h1 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(42px, 7vw, 88px);
+  line-height: 1.04;
+  letter-spacing: -2px;
+  margin: 18px 0 24px;
+}
+.detail-overview {
+  max-width: 760px;
+  font-family: Georgia, serif;
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.65;
+}
+.detail-actions {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+.detail-github,.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #E84F1A;
+  text-decoration: none;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  font-weight: bold;
+}
+.detail-rule { border-top: 3px solid #3D3D3B; margin: 15px 0 45px; }
+.detail-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 55px;
+  padding-bottom: 55px;
+}
+.detail-content-grid h2,.detail-section h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(27px, 4vw, 42px);
+  margin: 13px 0;
+}
+.detail-content-grid p,.detail-implementation p {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 650px;
+}
+.detail-section { padding: 42px 0; border-top: 1px solid #B8B8B8; }
+.detail-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 0 35px;
+  margin-top: 25px;
+}
+.detail-feature {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  border-bottom: 1px solid #D5D5D5;
+  padding: 18px 0;
+}
+.detail-feature span { color: #E84F1A; font-family: "DM Mono",monospace; font-size: 12px; }
+.detail-feature p { font-family: Georgia,serif; font-size: 17px; }
+.detail-tech-list { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.detail-tech-list span {
+  border: 1px solid #3D3D3B;
+  padding: 11px 15px;
+  font-family: "DM Mono",monospace;
+  font-size: 12px;
+}
+.detail-implementation { background: #F5F5F2; padding: 35px; margin: 15px 0 45px; }
+.detail-footer {
+  border-top: 3px solid #3D3D3B;
+  padding: 25px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.project-card { cursor: pointer; }
+.project-card:focus-visible { outline: 2px solid #E84F1A; outline-offset: 5px; }
+@media(max-width:700px) {
+  .detail-page { padding: 20px 5%; }
+  .detail-content-grid,.detail-feature-grid { grid-template-columns: 1fr; }
+  .detail-content-grid { gap: 30px; }
+  .detail-nav { gap: 15px; flex-wrap: wrap; }
+  .detail-implementation { padding: 22px; }
+  .detail-brand { letter-spacing: -1px; }
+}
+/* NEWSPAPER EDITORIAL PROJECT DETAIL DESIGN */
+
+.detail-page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 5%;
+  background: #FFFFFF;
+  color: #3D3D3B;
+  min-height: 100vh;
+}
+
+.detail-masthead {
+  border-top: 5px solid #3D3D3B;
+  border-bottom: 4px double #3D3D3B;
+  padding: 20px 0 15px;
+  text-align: center;
+}
+
+.detail-brand {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(38px, 7vw, 84px);
+  font-weight: 900;
+  letter-spacing: -3px;
+  line-height: 1;
+  text-decoration: none;
+  color: #3D3D3B;
+}
+
+.detail-brand span {
+  color: #E84F1A;
+}
+
+.detail-masthead p {
+  margin-top: 13px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.detail-nav {
+  border-bottom: 2px solid #3D3D3B;
+  background: transparent;
+  margin-top: 0;
+  padding: 13px 0;
+  justify-content: center;
+}
+
+.detail-nav a {
+  color: #3D3D3B;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.detail-nav a:hover {
+  color: #E84F1A;
+}
+
+.detail-hero {
+  max-width: none;
+  padding: 65px 0 45px;
+  border-bottom: 4px double #3D3D3B;
+}
+
+.detail-kicker {
+  display: inline-block;
+  color: #E84F1A;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #E84F1A;
+  padding-bottom: 8px;
+}
+
+.detail-hero h1 {
+  max-width: 1050px;
+  margin: 22px 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(44px, 7.5vw, 96px);
+  font-weight: 900;
+  line-height: 0.99;
+  letter-spacing: -3px;
+  color: #3D3D3B;
+}
+
+.detail-overview {
+  max-width: 850px;
+  margin-top: 25px;
+  font-family: Georgia, serif;
+  font-size: clamp(19px, 2.2vw, 25px);
+  line-height: 1.65;
+  color: #555550;
+}
+
+.detail-actions {
+  border-top: 1px solid #B8B8B8;
+  padding-top: 18px;
+  margin-top: 32px;
+  justify-content: space-between;
+}
+
+.detail-github,
+.detail-back {
+  color: #E84F1A;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.detail-rule {
+  display: none;
+}
+
+.detail-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 45px 0;
+  border-bottom: 3px double #3D3D3B;
+}
+
+.detail-content-grid article {
+  padding: 0 35px;
+}
+
+.detail-content-grid article:first-child {
+  padding-left: 0;
+  border-right: 1px solid #B8B8B8;
+}
+
+.detail-content-grid article:last-child {
+  padding-right: 0;
+}
+
+.detail-content-grid h2,
+.detail-section h2 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(30px, 4vw, 43px);
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin: 18px 0;
+}
+
+.detail-content-grid p,
+.detail-implementation p {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  line-height: 1.9;
+  color: #555550;
+}
+
+.detail-number {
+  color: #E84F1A;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+
+.detail-section {
+  padding: 42px 0;
+  border-bottom: 1px solid #B8B8B8;
+  border-top: none;
+}
+
+.detail-feature-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 0 45px;
+  margin-top: 20px;
+}
+
+.detail-feature {
+  border-bottom: 1px solid #D5D5D5;
+  padding: 19px 0;
+  gap: 20px;
+}
+
+.detail-feature span {
+  color: #E84F1A;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+}
+
+.detail-feature p {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.detail-tech-list {
+  gap: 0;
+  margin-top: 25px;
+  border-top: 1px solid #B8B8B8;
+}
+
+.detail-tech-list span {
+  border: none;
+  border-bottom: 1px solid #B8B8B8;
+  border-right: 1px solid #B8B8B8;
+  padding: 14px 18px;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  background: transparent;
+}
+
+.detail-implementation {
+  margin: 35px 0;
+  padding: 35px;
+  background: #F5F5F2;
+  border-left: 4px solid #E84F1A;
+}
+
+.detail-footer {
+  border-top: 4px double #3D3D3B;
+  padding: 25px 0;
+}
+
+.project-card {
+  cursor: pointer;
+}
+
+.project-card:focus-visible {
+  outline: 2px solid #E84F1A;
+  outline-offset: 5px;
+}
+
+@media (max-width: 700px) {
+  .detail-page {
+    padding: 18px 5%;
+  }
+
+  .detail-hero {
+    padding: 45px 0 30px;
+  }
+
+  .detail-hero h1 {
+    letter-spacing: -1.5px;
+  }
+
+  .detail-content-grid,
+  .detail-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-content-grid {
+    gap: 30px;
+  }
+
+  .detail-content-grid article {
+    padding: 0;
+  }
+
+  .detail-content-grid article:first-child {
+    border-right: none;
+    border-bottom: 1px solid #B8B8B8;
+    padding-bottom: 28px;
+  }
+
+  .detail-content-grid article:last-child {
+    padding: 0;
+  }
+
+  .detail-nav {
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .detail-implementation {
+    padding: 23px;
+  }
+
+  .detail-brand {
+    letter-spacing: -1px;
+  }
+}
+
+/* END NEWSPAPER EDITORIAL PROJECT DETAIL DESIGN */
+
+/* NEWSPAPER FRONT-PAGE LAYOUT — EXISTING COLORS PRESERVED */
+
+.detail-page {
+  max-width: 1440px;
+  padding: 22px 4%;
+  background: #FFFFFF;
+}
+
+.detail-masthead {
+  border-top: 5px solid #3D3D3B;
+  border-bottom: 4px double #3D3D3B;
+  padding: 15px 0 12px;
+}
+
+.detail-brand {
+  font-size: clamp(42px, 7vw, 88px);
+  letter-spacing: -3px;
+}
+
+.detail-masthead p {
+  margin-top: 8px;
+  font-size: 10px;
+}
+
+.detail-nav {
+  justify-content: space-between;
+  padding: 12px 8px;
+  border-bottom: 2px solid #3D3D3B;
+}
+
+.detail-hero {
+  padding: 28px 0 24px;
+  border-bottom: 3px double #3D3D3B;
+}
+
+.detail-kicker {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+}
+
+.detail-hero h1 {
+  max-width: 1100px;
+  font-size: clamp(38px, 6vw, 76px);
+  line-height: 0.98;
+  margin: 13px 0;
+  letter-spacing: -2px;
+}
+
+.detail-overview {
+  max-width: 100%;
+  font-size: 19px;
+  line-height: 1.45;
+  margin-top: 14px;
+}
+
+.detail-actions {
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px solid #B8B8B8;
+}
+
+.detail-rule {
+  display: none;
+}
+
+/* Newspaper-style editorial columns */
+
+.detail-content-grid {
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 24px 0;
+  border-bottom: 3px double #3D3D3B;
+}
+
+.detail-content-grid article {
+  padding: 0 22px;
+  min-width: 0;
+}
+
+.detail-content-grid article:first-child {
+  padding-left: 0;
+  border-right: 1px solid #B8B8B8;
+}
+
+.detail-content-grid article:last-child {
+  padding-right: 0;
+}
+
+.detail-content-grid h2,
+.detail-section h2 {
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.08;
+  margin: 10px 0;
+}
+
+.detail-content-grid p,
+.detail-implementation p {
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* Compact newspaper sections */
+
+.detail-section {
+  padding: 22px 0;
+  border-bottom: 1px solid #B8B8B8;
+}
+
+.detail-feature-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 16px;
+  border-top: 1px solid #B8B8B8;
+}
+
+.detail-feature {
+  display: block;
+  padding: 13px 14px;
+  border-bottom: 1px solid #B8B8B8;
+  border-right: 1px solid #B8B8B8;
+}
+
+.detail-feature:nth-child(3n + 1) {
+  padding-left: 0;
+}
+
+.detail-feature span {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 10px;
+}
+
+.detail-feature p {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+/* Newspaper-style technology columns */
+
+.detail-tech-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid #B8B8B8;
+  margin-top: 15px;
+  gap: 0;
+}
+
+.detail-tech-list span {
+  padding: 12px 10px;
+  border: none;
+  border-right: 1px solid #B8B8B8;
+  border-bottom: 1px solid #B8B8B8;
+  font-size: 10px;
+  text-align: center;
+}
+
+/* Implementation as a newspaper article */
+
+.detail-implementation {
+  margin: 22px 0;
+  padding: 22px;
+  border-left: 3px solid #E84F1A;
+  background: #F5F5F2;
+}
+
+.detail-footer {
+  border-top: 4px double #3D3D3B;
+  padding: 17px 0;
+}
+
+/* Responsive newspaper columns */
+
+@media (max-width: 850px) {
+  .detail-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-feature:nth-child(3n + 1) {
+    padding-left: 14px;
+  }
+
+  .detail-feature:nth-child(2n + 1) {
+    padding-left: 0;
+  }
+
+  .detail-tech-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .detail-page {
+    padding: 16px 5%;
+  }
+
+  .detail-content-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .detail-content-grid article,
+  .detail-content-grid article:first-child,
+  .detail-content-grid article:last-child {
+    padding: 0 0 18px;
+    border-right: none;
+    border-bottom: 1px solid #B8B8B8;
+  }
+
+  .detail-feature-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .detail-feature:nth-child(3n + 1) {
+    padding-left: 14px;
+  }
+
+  .detail-feature:nth-child(2n + 1) {
+    padding-left: 0;
+  }
+
+  .detail-tech-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-hero h1 {
+    letter-spacing: -1px;
+  }
+
+  .detail-nav {
+    justify-content: center;
+    gap: 18px;
+  }
+}
+
+/* END NEWSPAPER FRONT-PAGE LAYOUT */

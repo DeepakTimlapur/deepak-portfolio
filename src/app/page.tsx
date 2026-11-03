@@ -1,7 +1,8 @@
-﻿"use client";
+"use client";
 
-import { useState, type FormEvent } from "react";
-import { ArrowUpRight, X } from "lucide-react";
+import { useEffect, useState, type FormEvent } from "react";
+import { ArrowUp, ArrowUpRight, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const projects = [
   {
@@ -47,7 +48,7 @@ const projects = [
     category: "AI / CUSTOMER SUPPORT",
     description: "An AI-powered customer support intelligence project focused on analyzing support interactions and helping teams understand and respond to customer issues.",
     tech: "AI · Customer Support · Project in Development",
-    image: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=900&q=85",
+    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=85",
   },
   {
     number: "06",
@@ -59,6 +60,15 @@ const projects = [
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&q=85",
   },];
 
+
+const projectSlugs: Record<string, string> = {
+  "01": "smart-bus-entry-system",
+  "02": "sales-intelligence-tool",
+  "03": "complaint-management-system",
+  "04": "ev-charging-demand",
+  "05": "supportiq",
+  "06": "erasetrace-ai",
+};
 const commands: Record<string, string> = {
   help: "Commands: about, skills, projects, contact, clear",
   about: "Deepak Timlapur — Computer Science and Data Science student at BITM.",
@@ -68,9 +78,90 @@ const commands: Record<string, string> = {
 };
 
 export default function Home() {
+  const router = useRouter();
+  // PORTFOLIO_V2_EFFECTS
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    let frame = 0;
+
+    const updateScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const maxScroll =
+          document.documentElement.scrollHeight - window.innerHeight;
+
+        const progress =
+          maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+
+        setScrollProgress(Math.min(100, Math.max(0, progress)));
+        setShowBackToTop(window.scrollY > 650);
+      });
+    };
+
+    updateScroll();
+    window.addEventListener("scroll", updateScroll, { passive: true });
+    window.addEventListener("resize", updateScroll);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", updateScroll);
+      window.removeEventListener("resize", updateScroll);
+    };
+  }, []);
+
+  function handleProjectMove(event: React.MouseEvent<HTMLElement>) {
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      window.matchMedia("(pointer: coarse)").matches
+    ) return;
+
+    const element = event.currentTarget;
+    const rect = element.getBoundingClientRect();
+
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+    element.style.setProperty("--tilt-x", `${-y * 4}deg`);
+    element.style.setProperty("--tilt-y", `${x * 4}deg`);
+  }
+
+  function handleProjectLeave(event: React.MouseEvent<HTMLElement>) {
+    event.currentTarget.style.setProperty("--tilt-x", "0deg");
+    event.currentTarget.style.setProperty("--tilt-y", "0deg");
+  }
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [command, setCommand] = useState("");
   const [output, setOutput] = useState("Welcome to Deepak's portfolio. Type help to explore.");
+
+  useEffect(() => {
+    const elements = document.querySelectorAll(".reveal");
+
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      !("IntersectionObserver" in window)
+    ) {
+      elements.forEach((element) => element.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -35px 0px" }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
+  }, []);
 
   function runCommand(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -86,8 +177,18 @@ export default function Home() {
   }
 
   return (
-    <main className="newspaper">
-      <header className="masthead" id="home">
+    <>
+      <div
+        className="reading-progress"
+        role="progressbar"
+        aria-label="Page reading progress"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(scrollProgress)}
+        style={{ width: `${scrollProgress}%` }}
+      />
+      <main className="newspaper">
+      <header className="masthead reveal reveal-down" id="home">
         <div className="masthead-rule" />
         <div className="masthead-title">
           <span>DEEPAK</span>{" "}
@@ -108,11 +209,11 @@ export default function Home() {
         </nav>
       </header>
 
-      <section className="lead-story" id="about">
+      <section className="lead-story reveal" id="about">
         <h1>BUILDING DIGITAL EXPERIENCES WITH CODE</h1>
 
         <div className="lead-grid">
-          <div className="lead-copy">
+          <div className="lead-copy reveal reveal-left">
             <p>
               I&apos;m Deepak Timlapur, a final-year Computer Science and
               Data Science student at Ballari Institute of Technology
@@ -130,7 +231,7 @@ export default function Home() {
             </p>
           </div>
 
-          <figure className="lead-image">
+          <figure className="lead-image reveal reveal-right">
             <img
               src="/images/portfolio-city.png"
               alt="City architecture in monochrome"
@@ -142,18 +243,18 @@ export default function Home() {
 
       <section className="article-section" id="skills">
         <div className="article-grid">
-          <div className="article-heading">
+          <div className="article-heading reveal">
             <h2>Technical<br />Expertise</h2>
             <div className="small-image">
               <img
-                src="/images/tech-expertise.jpg"
+                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1000&q=90"
                 alt="Computer circuit board"
               />
               <span>TOOLS AND TECHNOLOGIES</span>
             </div>
           </div>
 
-          <div className="article-column">
+          <div className="article-column reveal">
             <h3>Programming & Backend</h3>
             <p>
               Python, SQL and Dart form the foundation of my development
@@ -169,7 +270,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="article-column">
+          <div className="article-column reveal">
             <h3>Artificial Intelligence</h3>
             <p>
               My AI and data toolkit includes Pandas, NumPy, Scikit-learn,
@@ -186,7 +287,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="projects-section" id="projects">
+      <section className="projects-section reveal" id="projects">
         <div className="section-heading">
           <h2>SELECTED PROJECTS</h2>
           <span>ENGINEERING & DEVELOPMENT</span>
@@ -196,7 +297,26 @@ export default function Home() {
 
         <div className="project-grid">
           {projects.map((project) => (
-            <article className="project-card" key={project.number}>
+            <article
+              className="project-card reveal tilt-card"
+              key={project.number}
+              onMouseMove={handleProjectMove}
+              onMouseLeave={handleProjectLeave}
+              role="link"
+              tabIndex={0}
+              onClick={(event) => {
+                if ((event.target as HTMLElement).closest("a")) return;
+                const slug = projectSlugs[project.number];
+                if (slug) router.push(`/projects/${slug}`);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  const slug = projectSlugs[project.number];
+                  if (slug) router.push(`/projects/${slug}`);
+                }
+              }}
+            >
               <div className="project-image">
                 <img src={project.image} alt={project.title} />
                 <span>{project.category}</span>
@@ -219,11 +339,11 @@ export default function Home() {
           ))}
         </div>
         <p className="repo-note">
-          PROJECT LINKS CURRENTLY OPEN MY GITHUB PROFILE. INDIVIDUAL REPOSITORY LINKS CAN BE ADDED WHEN VERIFIED.
+          EXPLORE EACH PROJECT THROUGH ITS INDIVIDUAL GITHUB REPOSITORY.
         </p>
       </section>
 
-      <section className="education-section" id="education">
+      <section className="education-section reveal" id="education">
         <div className="section-heading">
           <h2>EDUCATION</h2>
           <span>ACADEMIC BACKGROUND</span>
@@ -236,7 +356,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="contact-section" id="contact">
+      <footer className="contact-section reveal" id="contact">
         <div className="section-heading">
           <h2>CONTACT</h2>
           <span>GET IN TOUCH</span>
@@ -264,8 +384,8 @@ export default function Home() {
       </footer>
 
       {terminalOpen && (
-        <div className="terminal-overlay" onClick={() => setTerminalOpen(false)}>
-          <div className="terminal-box" onClick={(event) => event.stopPropagation()}>
+        <div className="terminal-overlay terminal-enter" onClick={() => setTerminalOpen(false)}>
+          <div className="terminal-box terminal-enter" onClick={(event) => event.stopPropagation()}>
             <div className="terminal-header">
               <span>DEEPAK.EXE</span>
               <button onClick={() => setTerminalOpen(false)} aria-label="Close terminal">
@@ -287,7 +407,25 @@ export default function Home() {
           </div>
         </div>
       )}
-    </main>
+      </main>
+
+      <button
+        className={`back-to-top ${showBackToTop ? "visible" : ""}`}
+        type="button"
+        aria-label="Back to top"
+        tabIndex={showBackToTop ? 0 : -1}
+        onClick={() =>
+          window.scrollTo({
+            top: 0,
+            behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+              ? "instant"
+              : "smooth",
+          })
+        }
+      >
+        <ArrowUp size={20} />
+      </button>
+    </>
   );
 }
 
