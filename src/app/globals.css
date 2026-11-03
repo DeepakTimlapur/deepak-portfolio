@@ -1,26 +1,493 @@
+﻿@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Libre+Baskerville:wght@400;700&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #FFFFFF;
+  --ink: #3D3D3B;
+  --orange: #E84F1A;
+  --line: #3D3D3B;
+  --muted: #777777;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+* { box-sizing: border-box; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 18px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: #ffffff;
+  color: var(--ink);
+  font-family: "Libre Baskerville", Georgia, serif;
+}
+
+a { color: inherit; text-decoration: none; }
+button { cursor: pointer; font: inherit; }
+
+.newspaper {
+  width: min(1450px, 92%);
+  margin: 24px auto;
+}
+
+.masthead-rule {
+  height: 5px;
+  background: var(--ink);
+  margin-bottom: 7px;
+}
+
+.masthead-rule.double {
+  height: 3px;
+  margin: 5px 0 15px;
+  position: relative;
+}
+
+.masthead-rule.double::after {
+  content: "";
+  height: 1px;
+  background: var(--ink);
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 0;
+}
+
+.masthead-title {
+  font: 900 clamp(44px, 10.7vw, 150px)/1.05 "Playfair Display", Georgia, serif;
+  letter-spacing: -.055em;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.orange { color: var(--orange); }
+
+.category-bar {
+  min-height: 48px;
+  padding: 10px 15px;
+  background: var(--ink);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(9px, 2vw, 26px);
+  flex-wrap: wrap;
+  font: 700 clamp(10px, 1.5vw, 17px) "Playfair Display", Georgia, serif;
+  letter-spacing: .025em;
+}
+
+.category-bar a:hover { color: #ff7950; }
+.category-bar b { color: #fff; }
+
+.lead-story { padding-top: 23px; }
+
+.lead-story > h1 {
+  font: 800 clamp(26px, 4.2vw, 54px)/1.2 "Playfair Display", Georgia, serif;
+  margin: 0 0 25px;
+  letter-spacing: -.025em;
+}
+
+.lead-grid {
+  display: grid;
+  grid-template-columns: 32% 1fr;
+  gap: 25px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid var(--line);
+}
+
+.lead-copy {
+  font-size: clamp(12px, 1.35vw, 17px);
+  line-height: 1.65;
+  text-align: justify;
+}
+
+.lead-copy p { margin: 0 0 15px; }
+
+.lead-image {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+  height: clamp(240px, 37vw, 500px);
+  background: #e3e6e8;
+  overflow: hidden;
+}
+
+.lead-image img,
+.small-image img,
+.project-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+
+.lead-image figcaption {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--orange);
+  color: white;
+  padding: 9px 15px;
+  font: 700 11px "Playfair Display", Georgia, serif;
+}
+
+.article-section {
+  border-bottom: 3px solid var(--line);
+  padding: 25px 0 28px;
+}
+
+.article-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 25px;
+}
+
+.article-heading h2 {
+  margin: 0 0 23px;
+  font: 800 clamp(32px, 4.6vw, 58px)/1.05 "Playfair Display", Georgia, serif;
+}
+
+.small-image {
+  position: relative;
+  height: 260px;
+  background: #e3e6e8;
+  overflow: hidden;
+}
+
+.small-image span {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--orange);
+  color: white;
+  padding: 8px 12px;
+  font: 700 10px "Playfair Display", Georgia, serif;
+}
+
+.article-column {
+  font-size: 13px;
+  line-height: 1.75;
+  text-align: justify;
+}
+
+.article-column h3 {
+  font: 700 21px/1.2 "Playfair Display", Georgia, serif;
+  margin: 0 0 10px;
+}
+
+.article-column p { margin: 0 0 25px; }
+
+.projects-section,
+.education-section,
+.contact-section {
+  padding: 25px 0;
+  border-bottom: 3px solid var(--line);
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 9px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font: 700 23px "Playfair Display", Georgia, serif;
+}
+
+.section-heading span {
+  font: italic 10px "Libre Baskerville", Georgia, serif;
+  color: var(--muted);
+}
+
+.projects-headline {
+  text-align: center;
+  font: 800 clamp(32px, 5vw, 64px) "Playfair Display", Georgia, serif;
+  margin: 22px 0;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 25px;
+}
+
+.project-card {
+  min-width: 0;
+  border-bottom: 1px solid #999;
+  padding-bottom: 18px;
+}
+
+.project-image {
+  height: 230px;
+  background: #e3e6e8;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-image > span {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: var(--orange);
+  color: white;
+  padding: 7px 11px;
+  font: 9px "DM Mono", monospace;
+}
+
+.project-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.project-title-row > span {
+  color: var(--orange);
+  font: 11px "DM Mono", monospace;
+}
+
+.project-title-row h3 {
+  font: 700 21px "Playfair Display", Georgia, serif;
+  margin: 0;
+}
+
+.project-card > p {
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.project-tech {
+  color: var(--muted);
+  font: 9px "DM Mono", monospace;
+  line-height: 1.7;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 13px;
+  color: var(--orange);
+  font: 10px "DM Mono", monospace;
+}
+
+.project-link:hover { text-decoration: underline; }
+
+.repo-note {
+  font: 8px/1.6 "DM Mono", monospace;
+  color: var(--muted);
+  margin: 18px 0 0;
+}
+
+.education-content { padding: 18px 0; }
+
+.education-content h3 {
+  font: 700 25px "Playfair Display", Georgia, serif;
+  margin: 0 0 10px;
+}
+
+.education-content p {
+  font-size: 13px;
+  line-height: 1.7;
+  margin: 5px 0;
+}
+
+.education-content strong {
+  display: inline-block;
+  color: var(--orange);
+  font: 10px "DM Mono", monospace;
+  margin-top: 12px;
+}
+
+.contact-headline {
+  font: 800 clamp(40px, 8vw, 100px) "Playfair Display", Georgia, serif;
+  margin: 25px 0;
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  border-top: 1px solid var(--line);
+  padding: 15px 0;
+}
+
+.contact-links a,
+.contact-links button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: 10px "DM Mono", monospace;
+}
+
+.contact-links a:hover,
+.contact-links button:hover { color: var(--orange); }
+
+.footer-bottom {
+  border-top: 1px solid var(--line);
+  padding-top: 13px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font: 9px "DM Mono", monospace;
+}
+
+.terminal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #0009;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.terminal-box {
+  width: min(500px, 100%);
+  background: white;
+  border: 2px solid var(--ink);
+  padding: 20px;
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 10px;
+  font: 11px "DM Mono", monospace;
+}
+
+.terminal-header button { border: 0; background: none; }
+
+.terminal-output {
+  min-height: 50px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.terminal-box form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--ink);
+  padding: 10px 0;
+}
+
+.terminal-box input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  font: 12px "DM Mono", monospace;
+}
+
+.terminal-box form button {
+  background: var(--orange);
+  color: white;
+  border: 0;
+  padding: 7px 12px;
+  font: 10px "DM Mono", monospace;
+}
+
+.terminal-box small {
+  display: block;
+  margin-top: 12px;
+  font: 8px "DM Mono", monospace;
+}
+
+@media (max-width: 700px) {
+  .newspaper { width: 94%; margin: 15px auto; }
+  .masthead-title { font-size: clamp(34px, 9.5vw, 65px); }
+  .category-bar { gap: 8px; padding: 11px 6px; }
+  .lead-grid { grid-template-columns: 1fr; gap: 10px; }
+  .lead-copy { font-size: 13px; }
+  .lead-image { height: 240px; }
+  .article-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
+  .article-heading { grid-column: 1 / -1; }
+  .article-heading h2 br { display: none; }
+  .small-image { height: 190px; }
+  .article-column { font-size: 11px; }
+  .article-column h3 { font-size: 17px; }
+  .project-image { height: 170px; }
+  .project-title-row h3 { font-size: 17px; }
+  .footer-bottom { flex-wrap: wrap; }
+}
+
+@media (max-width: 450px) {
+  .masthead-title { font-size: 9vw; }
+  .masthead-rule { height: 4px; }
+  .category-bar { font-size: 9px; }
+  .lead-story > h1 { font-size: 27px; }
+  .article-grid { grid-template-columns: 1fr; }
+  .article-heading { grid-column: auto; }
+  .small-image { height: 220px; }
+  .project-grid { grid-template-columns: 1fr; }
+  .project-image { height: 210px; }
+  .section-heading h2 { font-size: 19px; }
+  .section-heading span { font-size: 8px; }
+  .contact-links { flex-direction: column; gap: 15px; }
+  .footer-bottom { font-size: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* Exact reference image color adjustments */
+body {
+  background: #FFFFFF;
+  color: #3D3D3B;
+}
+
+.masthead-title {
+  color: #3D3D3B;
+}
+
+.masthead-title .orange {
+  color: #E84F1A;
+}
+
+.category-bar {
+  background: #3D3D3B;
+}
+
+.lead-image,
+.small-image,
+.project-image {
+  background: #E5E9EC;
+}
+
+.lead-image figcaption,
+.small-image span,
+.project-image > span {
+  background: #E84F1A;
+  color: #FFFFFF;
+}
+
+.project-link,
+.education-content strong {
+  color: #E84F1A;
+}
+
+/* Keep the original lake photograph in full colour */
+.lead-image img,
+.small-image img {
+  filter: none !important;
+  -webkit-filter: none !important;
+}
+
+/* Restore newspaper-style black and white photography */
+.lead-image img,
+.small-image img {
+  filter: grayscale(100%) !important;
+  -webkit-filter: grayscale(100%) !important;
 }
