@@ -356,24 +356,104 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="contact-section reveal" id="contact">
+            <footer className="contact-section reveal" id="contact">
         <div className="section-heading">
           <h2>CONTACT</h2>
           <span>GET IN TOUCH</span>
         </div>
 
-        <h2 className="contact-headline">LET&apos;S CONNECT.</h2>
+        <div className="contact-form-shell">
+          <h2 className="contact-headline">LET&apos;S BUILD SOMETHING TOGETHER.</h2>
+          <p className="contact-intro">
+            HAVE A PROJECT, OPPORTUNITY OR IDEA? GET IN TOUCH.
+          </p>
 
-        <div className="contact-links">
-          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=deepak112085%40gmail.com" target="_blank" rel="noreferrer">
-            DEEPAK112085@GMAIL.COM <ArrowUpRight size={15} />
-          </a>
-          <a href="https://github.com/DeepakTimlapur" target="_blank" rel="noreferrer">
-            GITHUB PROFILE <ArrowUpRight size={15} />
-          </a>
-          <button onClick={() => setTerminalOpen(true)}>
-            OPEN DEEPAK.EXE
-          </button>
+          <form
+            className="contact-form"
+            onSubmit={(event: FormEvent<HTMLFormElement>) => {
+              event.preventDefault();
+
+              const formData = new FormData(event.currentTarget);
+              const name = String(formData.get("name") || "").trim();
+              const email = String(formData.get("email") || "").trim();
+              const message = String(formData.get("message") || "").trim();
+
+              const subject = encodeURIComponent(
+                `Portfolio enquiry from ${name}`
+              );
+
+              const body = encodeURIComponent(
+                `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+              );
+
+              window.open(
+                `https://mail.google.com/mail/?view=cm&fs=1&to=deepak112085%40gmail.com&su=${subject}&body=${body}`,
+                "_blank",
+                "noopener,noreferrer"
+              );
+            }}
+          >
+            <div className="contact-fields-row">
+              <label className="contact-field">
+                <span>YOUR NAME</span>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your name"
+                  required
+                />
+              </label>
+
+              <label className="contact-field">
+                <span>YOUR EMAIL</span>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="your@email.com"
+                  required
+                />
+              </label>
+            </div>
+
+            <label className="contact-field contact-message-field">
+              <span>MESSAGE</span>
+              <textarea
+                name="message"
+                placeholder="Let's build something amazing together..."
+                rows={5}
+                required
+              />
+            </label>
+
+            <button type="submit" className="contact-submit">
+              SEND MESSAGE
+              <ArrowUpRight size={16} />
+            </button>
+          </form>
+
+          <div className="contact-connect">
+            <span className="connect-label">CONNECT:</span>
+
+            <a
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=deepak112085%40gmail.com"
+              target="_blank"
+              rel="noreferrer"
+            >
+              EMAIL ↗
+            </a>
+
+            <a
+              href="https://github.com/DeepakTimlapur"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GITHUB ↗
+            </a>
+
+            <button onClick={() => setTerminalOpen(true)}>
+              OPEN DEEPAK.EXE
+            </button>
+          </div>
         </div>
 
         <div className="footer-bottom">

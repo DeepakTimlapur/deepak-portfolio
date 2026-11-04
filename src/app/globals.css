@@ -1562,3 +1562,165 @@ button:focus-visible,
 }
 
 /* END NEWSPAPER FRONT-PAGE LAYOUT */
+
+/* NEWSPAPER CONTACT FORM */
+
+.contact-form-shell {
+  border: 1px solid #D5D5D5;
+  padding: clamp(22px, 4vw, 42px);
+  margin: 25px 0;
+  background: #FFFFFF;
+}
+
+.contact-form-shell .contact-headline {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(27px, 4vw, 45px);
+  line-height: 1.15;
+  color: #3D3D3B;
+  margin-bottom: 10px;
+}
+
+.contact-intro {
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  color: #3D3D3B;
+  margin-bottom: 30px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.contact-fields-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.contact-field > span {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #3D3D3B;
+}
+
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid #B8B8B8;
+  border-radius: 2px;
+  background: #FFFFFF;
+  color: #3D3D3B;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.contact-field input {
+  min-height: 58px;
+}
+
+.contact-field textarea {
+  min-height: 135px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+  border-color: #E84F1A;
+}
+
+.contact-field input::placeholder,
+.contact-field textarea::placeholder {
+  color: #929292;
+  opacity: 1;
+}
+
+.contact-submit {
+  width: 100%;
+  min-height: 60px;
+  border: 1px solid #E84F1A;
+  border-radius: 2px;
+  background: #E84F1A;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.contact-submit:hover {
+  background: #3D3D3B;
+  border-color: #3D3D3B;
+}
+
+.contact-connect {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  border-top: 1px solid #3D3D3B;
+  margin-top: 32px;
+  padding-top: 12px;
+}
+
+.contact-connect a,
+.contact-connect button {
+  border: none;
+  background: transparent;
+  color: #E84F1A;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contact-connect a:hover,
+.contact-connect button:hover {
+  color: #3D3D3B;
+}
+
+.connect-label {
+  color: #3D3D3B;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@media (max-width: 650px) {
+  .contact-fields-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-connect {
+    justify-content: flex-start;
+  }
+
+  .contact-form-shell {
+    padding: 20px;
+  }
+}
+
+/* END NEWSPAPER CONTACT FORM */
